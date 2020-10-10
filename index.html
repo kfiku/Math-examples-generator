@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math examples generator</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+
+            font-size: 16px;
+            line-height: 1.4rem;
+        }
+
+        .form-box {
+            padding: 20px;
+        }
+        .form-box * {
+            display: block;
+        }
+
+        .table-box {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        td {
+            border-bottom: 1px solid #ccc;
+        }
+
+        @media print {
+            .no-print {
+                display:none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-box no-print">
+        <form id="generateForm">
+            <label for="operations">Operations:</label>
+            <select id="operations" multiple>
+                <option value="+">Addition +</option>
+                <option value="-">Subtraction - </option>
+                <option value="*">Multiplication ·</option>
+                <option value=":">Division:</option>
+            </select>
+
+            <label for="maxEquals">Max equals:</label>
+            <input id="maxEquals">
+
+            <label for="termOneMin">Term one Min value:</label>
+            <input id="termOneMin">
+
+            <label for="termOneMax">Term one Max value:</label>
+            <input id="termOneMax">
+
+            <label for="termTwoMin">Term Two Min value:</label>
+            <input id="termTwoMin">
+
+            <label for="termTwoMax">Term Two Max value:</label>
+            <input id="termTwoMax">
+            <br />
+            <button id="generate">
+                Generate
+            </button>
+        </form>
+    </div>
+
+    <div class="table-box" id="tableBox">
+        test
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
