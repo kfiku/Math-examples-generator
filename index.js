@@ -30,15 +30,19 @@ function randomize(props) {
         termTwoMin,
         termTwoMax
     } = props
-    const examples = 300;
+    const examples = 1000;
     const data = [];
 
 
     for (let index = 0; index < examples; index++) {
-        const termOne = Math.round(Math.random() * (termOneMax - termOneMin)) + termOneMin;
-        const termTwo = Math.round(Math.random() * (termTwoMax - termTwoMin)) + termTwoMin;
         const operationIndex = Math.floor(Math.random() * operations.length)
         const operation = operations[operationIndex];
+        const termOne = operation === ':'
+            ? (Math.round(Math.random() * (maxEquals - termOneMin)) + termOneMin)
+            : (Math.round(Math.random() * (termOneMax - termOneMin)) + termOneMin)
+        ;
+        const termTwo = Math.round(Math.random() * (termTwoMax - termTwoMin)) + termTwoMin;
+        const result = getResult(termOne, termTwo, operation)
 
         if (operation === '+' && termOne + termTwo > maxEquals) {
             continue;
@@ -48,7 +52,7 @@ function randomize(props) {
             continue;
         }
 
-        if (operation === ':' && termOne < termTwo) {
+        if (operation === ':' && !validateDivision(termOne, termTwo, termOneMax)) {
             continue;
         }
 
@@ -58,24 +62,43 @@ function randomize(props) {
 
         const operationToPrint = operation === '*' ? "·" : operation;
 
-        data[index] = `${termOne} ${operationToPrint} ${termTwo} = `;
+        const operationString = `${termOne} ${operationToPrint} ${termTwo} = `
+            // + `${result}`
+
+        data.push(operationString);
     }
 
     const uniq = data
         .filter(onlyUnique)
         .filter((_, index) => index < 120)
 
-    const plus = uniq.filter(operation => operation.includes('+'))
-    const minus = uniq.filter(operation => operation.includes('-'))
-    const multiply = uniq.filter(operation => operation.includes('·'))
-    const divide = uniq.filter(operation => operation.includes(':'))
-
-    console.log(`plus: ${plus.length}`);
-    console.log(`minus: ${minus.length}`);
-    console.log(`multiply: ${multiply.length}`);
-    console.log(`divide: ${divide.length}`);
-
     return uniq;
+}
+
+function validateDivision(termOne, termTwo, maxEquals) {
+    if (termOne / termTwo === Math.round(termOne / termTwo)) {
+        if (termOne / termTwo <= maxEquals) {
+            return true
+        }
+    }
+
+    return false;
+}
+
+function getResult(termOne, termTwo, operation) {
+    switch (operation) {
+        case '+':
+            return termOne + termTwo;
+        case '-':
+            return termOne - termTwo;
+        case '*':
+            return termOne * termTwo;
+        case ':':
+            return termOne / termTwo;
+
+        default:
+            break;
+    }
 }
 
 function onlyUnique(value, index, self) {
